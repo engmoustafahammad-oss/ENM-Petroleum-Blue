@@ -1,9 +1,11 @@
 name: ENM Windows Build
 
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
 
 jobs:
   test-and-package:
@@ -15,7 +17,7 @@ jobs:
           python-version: '3.11'
       - name: Extract source bundle
         shell: pwsh
-        run: Expand-Archive -Path ENM_Source_v0.3.zip -DestinationPath enm-src
+        run: Expand-Archive -Path ENM_Source_v0.4.zip -DestinationPath enm-src
       - name: Install dependencies
         shell: pwsh
         working-directory: enm-src
@@ -48,3 +50,4 @@ jobs:
             enm-src/dist/**
           if-no-files-found: error
           retention-days: 30
+
