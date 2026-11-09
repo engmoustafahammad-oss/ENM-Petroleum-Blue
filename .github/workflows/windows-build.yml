@@ -1,6 +1,8 @@
 name: ENM Windows Build
 
+
 on:
+
 
   push:
   
@@ -9,6 +11,7 @@ on:
   workflow_dispatch:
   
 jobs:
+
 
   test-and-package:
   
@@ -28,7 +31,7 @@ jobs:
       
         shell: pwsh
         
-        run: Expand-Archive -Path ENM_Source.zip -DestinationPath enm-src
+        run: Expand-Archive -Path ENM_Source_v0.3.zip -DestinationPath enm-src
         
       - name: Install dependencies
       
@@ -66,58 +69,3 @@ jobs:
           
           if (-not $iscc) { throw 'Inno Setup compiler not found on runner' }
           
-          & $iscc.FullName tools/ENM.iss
-          
-      - name: Upload artifacts
-      
-        uses: actions/upload-artifact@v4
-        
-        with:
-        
-          name: ENM-Windows-${{ github.sha }}
-          
-          path: |
-          
-            enm-src/dist/**
-            
-            enm-src/release/**
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
