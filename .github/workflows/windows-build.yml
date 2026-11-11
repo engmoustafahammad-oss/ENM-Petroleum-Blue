@@ -1,67 +1,113 @@
 name: ENM Windows Build
 
-
-
-
-
-
-
-
 on:
+
   push:
+  
     branches: [main]
+    
   workflow_dispatch:
-
-
-
-
-
-
-
-
+  
 jobs:
+
   test-and-package:
+  
     runs-on: windows-latest
+    
     steps:
+    
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-python@v5
+      
         with:
+        
           python-version: '3.11'
-      - name: Extract source bundle
-        shell: pwsh
-        run: Expand-Archive -Path ENM_Source_final.zip -DestinationPath enm-src
+          
       - name: Install dependencies
+      
         shell: pwsh
-        working-directory: enm-src
+        
         run: python -m pip install --upgrade pip; pip install -r requirements.txt; pip install pyinstaller pytest
+        
       - name: Run tests
+      
         shell: pwsh
-        working-directory: enm-src
+        
         run: python -m pytest -q
+        
       - name: Build application
+      
         shell: pwsh
-        working-directory: enm-src
+        
         run: pyinstaller --noconfirm --clean tools/ENM.spec
+        
       - name: Install Inno Setup
+      
         shell: pwsh
+        
         run: choco install innosetup -y --no-progress
+        
       - name: Build installer
+      
         shell: pwsh
-        working-directory: enm-src
+        
         run: |
+        
           $iscc = Get-ChildItem 'C:\Program Files (x86)\Inno Setup*\ISCC.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
+          
           if (-not $iscc) { throw 'Inno Setup compiler not found on runner' }
+          
           & $iscc.FullName tools/ENM.iss
+          
           if (-not (Test-Path release/ENM_Setup_v*.exe)) { throw 'Installer was not produced' }
+          
       - name: Upload Windows installer
+      
         uses: actions/upload-artifact@v4
+        
         with:
+        
           name: ENM-Windows-Installer
+          
           path: |
-            enm-src/release/*.exe
-            enm-src/dist/**
+          
+            release/*.exe
+            
+            dist/**
+            
           if-no-files-found: error
+          
           retention-days: 30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
