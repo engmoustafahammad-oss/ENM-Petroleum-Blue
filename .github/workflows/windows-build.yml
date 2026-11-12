@@ -28,7 +28,7 @@ jobs:
       
         shell: pwsh
         
-        run: Expand-Archive -Path ENM_Source_final_v2.zip -DestinationPath enm-src
+        run: Expand-Archive -Path ENM_Source_Sunrise_Systems.zip -DestinationPath enm-src
         
       - name: Install dependencies
       
@@ -82,7 +82,7 @@ jobs:
         
         with:
         
-          name: ENM-Windows-Installer
+          name: ENM-Windows-Installer-Sunrise-Systems
           
           path: |
           
